@@ -77,5 +77,6 @@ if (!test) {
 
 module.exports = {
   app,
-  config,
+  parseConfig,
+  dashboardConfig
 };
