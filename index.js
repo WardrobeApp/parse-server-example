@@ -13,7 +13,7 @@ const databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
 if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
-const parseConfig = {
+const config = {
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'myAppId',
@@ -28,16 +28,15 @@ const parseConfig = {
 // javascriptKey, restAPIKey, dotNetKey, clientKey
 
 const dashboardConfig = new ParseDashboard({
-  "apps": [
+  'apps': [
     {
-      "serverURL": "http://localhost:1337/parse",
-      "appId": "myAppId",
-      "masterKey": "myMasterKey",
-      "appName": "WardrobeApp"
-    }
-  ]
+      'serverURL': 'http://localhost:1337/parse',
+      'appId': 'myAppId',
+      'masterKey': 'myMasterKey',
+      'appName': 'WardrobeApp',
+    },
+  ],
 });
-
 
 const app = express();
 
@@ -45,7 +44,7 @@ const app = express();
 app.use('/public', express.static(path.join(__dirname, '/public')));
 
 if (!test) {
-  const api = new ParseServer(parseConfig);
+  const api = new ParseServer(config);
   // make the Parse Server available at /parse
   app.use('/parse', api);
 
@@ -55,20 +54,20 @@ if (!test) {
 }
 
 // Parse Server plays nicely with the rest of your web routes
-app.get('/', function (req, res) {
+app.get('/', function(req, res) {
   res.status(200).send('I dream of being a website.  Please star the parse-server repo on GitHub!');
 });
 
 // There will be a test page available on the /test path of your server url
 // Remove this before launching your app
-app.get('/test', function (req, res) {
+app.get('/test', function(req, res) {
   res.sendFile(path.join(__dirname, '/public/test.html'));
 });
 
 const port = process.env.PORT || 1337;
 if (!test) {
   const httpServer = require('http').createServer(app);
-  httpServer.listen(port, function () {
+  httpServer.listen(port, function() {
     console.log('parse-server-example running on port ' + port + '.');
   });
   // This will enable the Live Query real-time server
@@ -77,6 +76,5 @@ if (!test) {
 
 module.exports = {
   app,
-  parseConfig,
-  dashboardConfig
+  config,
 };
