@@ -50,7 +50,7 @@ if (!test) {
 
   const dashboard = new ParseDashboard(dashboardConfig);
   // make the Parse Dashboard available at /dashboard
-  // app.use('/dashboard', dashboard);
+  app.use('/dashboard', dashboard);
 }
 
 // Parse Server plays nicely with the rest of your web routes
